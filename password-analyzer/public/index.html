@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Strength Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">🔐</div>
+      <h1>Password Strength Analyzer</h1>
+      <p class="subtitle">Check how strong your password is — instantly.</p>
+    </header>
+
+    <main>
+      <div class="input-group">
+        <label for="pwd-input">Enter your password</label>
+        <div class="input-row">
+          <input type="password" id="pwd-input" placeholder="Type your password..." autocomplete="off" />
+          <button id="toggle-btn" aria-label="Toggle visibility">👁</button>
+        </div>
+      </div>
+
+      <div id="results" class="hidden">
+        <div class="meter-wrap">
+          <div class="meter-bar">
+            <div class="meter-fill" id="meter"></div>
+          </div>
+          <div class="score-row">
+            <span id="score-label" class="score-label">—</span>
+            <span id="score-num" class="score-num">0 / 100</span>
+          </div>
+        </div>
+
+        <div class="checks-grid" id="checks-grid"></div>
+
+        <div id="suggestions-section" class="section hidden">
+          <h2>Suggestions</h2>
+          <ul id="suggestions-list"></ul>
+        </div>
+
+        <div class="section">
+          <h2>Stronger alternatives</h2>
+          <div class="alts" id="alts"></div>
+        </div>
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">🔒</div>
+        <p>Start typing to analyze your password</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Passwords are never stored or sent to any external server.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
