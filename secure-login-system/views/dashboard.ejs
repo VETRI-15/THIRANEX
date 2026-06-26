@@ -1,0 +1,103 @@
+<%- include('partials/head', { title: 'Dashboard — Secure Login' }) %>
+
+<div class="dash-wrapper">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">🔐 SecureLogin</div>
+    <div class="nav-user">
+      <span>👤 <%= user.username %></span>
+      <form action="/auth/logout" method="POST" style="display:inline">
+        <button type="submit" class="btn btn-sm btn-outline">Logout</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="dash-content">
+    <!-- Flash messages -->
+    <% if (flash.success) { %>
+      <div class="alert alert-success"><%= flash.success %></div>
+    <% } %>
+    <% if (flash.error) { %>
+      <div class="alert alert-error"><%= flash.error %></div>
+    <% } %>
+
+    <!-- Welcome card -->
+    <div class="welcome-card">
+      <h2>Welcome, <%= user.username %>! 🎉</h2>
+      <p>You're securely logged in. Your session expires in 30 minutes of inactivity.</p>
+    </div>
+
+    <!-- Info grid -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">📧</div>
+        <div class="info-label">Email</div>
+        <div class="info-value"><%= user.email %></div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📅</div>
+        <div class="info-label">Member Since</div>
+        <div class="info-value"><%= new Date(user.createdAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) %></div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><%= user.twoFAEnabled ? '🛡️' : '⚠️' %></div>
+        <div class="info-label">Two-Factor Auth</div>
+        <div class="info-value" style="color:<%= user.twoFAEnabled ? '#27ae60' : '#e74c3c' %>">
+          <%= user.twoFAEnabled ? 'Enabled' : 'Not Enabled' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security section -->
+    <div class="section-grid">
+
+      <!-- Change Password -->
+      <div class="card">
+        <h3 class="card-title">🔑 Change Password</h3>
+        <form action="/dashboard/change-password" method="POST">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" name="currentPassword" placeholder="Current password" required />
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="newPassword" placeholder="New password" required />
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" name="confirmNewPassword" placeholder="Re-enter new password" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </form>
+      </div>
+
+      <!-- 2FA -->
+      <div class="card">
+        <h3 class="card-title">🛡️ Two-Factor Authentication</h3>
+        <% if (!user.twoFAEnabled) { %>
+          <p class="card-desc">Protect your account with an authenticator app (Google Authenticator, Authy, etc.)</p>
+          <a href="/auth/2fa-setup" class="btn btn-success">Enable 2FA</a>
+        <% } else { %>
+          <p class="card-desc" style="color:#27ae60">✅ 2FA is active. Your account has enhanced protection.</p>
+          <form action="/auth/2fa-disable" method="POST"
+                onsubmit="return confirm('Are you sure you want to disable 2FA?')">
+            <button type="submit" class="btn btn-danger">Disable 2FA</button>
+          </form>
+        <% } %>
+
+        <div class="security-tips">
+          <h4>Security Tips</h4>
+          <ul>
+            <li>Use a unique password for each site</li>
+            <li>Never share your login credentials</li>
+            <li>Enable 2FA for maximum security</li>
+            <li>Log out when using shared computers</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body></html>

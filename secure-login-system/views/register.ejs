@@ -1,0 +1,84 @@
+<%- include('partials/head', { title: 'Register — Secure Login' }) %>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">🔐</div>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-subtitle">Join SecureLogin — your data stays safe</p>
+
+    <% if (flash.error) { %>
+      <div class="alert alert-error"><%= flash.error %></div>
+    <% } %>
+
+    <% if (errors.length > 0) { %>
+      <div class="alert alert-error">
+        <% errors.forEach(e => { %><div>• <%= e.msg %></div><% }) %>
+      </div>
+    <% } %>
+
+    <form action="/auth/register" method="POST" novalidate>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username"
+               value="<%= old.username || '' %>"
+               placeholder="e.g. vetri_dev" autocomplete="username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email"
+               value="<%= old.email || '' %>"
+               placeholder="you@example.com" autocomplete="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password"
+                 placeholder="Min 8 chars, uppercase, number, symbol"
+                 autocomplete="new-password" required />
+          <button type="button" class="toggle-pw" onclick="togglePw('password')">👁</button>
+        </div>
+        <div class="pw-strength" id="pwStrength"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-wrap">
+          <input type="password" id="confirmPassword" name="confirmPassword"
+                 placeholder="Re-enter password"
+                 autocomplete="new-password" required />
+          <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword')">👁</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+
+    <p class="auth-footer">Already have an account? <a href="/auth/login">Sign in</a></p>
+  </div>
+</div>
+
+<script>
+function togglePw(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+document.getElementById('password').addEventListener('input', function() {
+  const v = this.value, el = document.getElementById('pwStrength');
+  let score = 0, label = '', cls = '';
+  if (v.length >= 8)           score++;
+  if (/[A-Z]/.test(v))         score++;
+  if (/[0-9]/.test(v))         score++;
+  if (/[^a-zA-Z0-9]/.test(v)) score++;
+  if      (score <= 1) { label = 'Weak';   cls = 'pw-weak'; }
+  else if (score === 2) { label = 'Fair';   cls = 'pw-fair'; }
+  else if (score === 3) { label = 'Good';   cls = 'pw-good'; }
+  else                  { label = 'Strong'; cls = 'pw-strong'; }
+  el.textContent = v ? `Strength: ${label}` : '';
+  el.className = `pw-strength ${v ? cls : ''}`;
+});
+</script>
+
+</body></html>

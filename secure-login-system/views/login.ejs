@@ -1,0 +1,53 @@
+<%- include('partials/head', { title: 'Login — Secure Login' }) %>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">🔐</div>
+    <h1 class="auth-title">Welcome Back</h1>
+    <p class="auth-subtitle">Sign in to your secure account</p>
+
+    <% if (flash.success) { %>
+      <div class="alert alert-success"><%= flash.success %></div>
+    <% } %>
+    <% if (flash.error) { %>
+      <div class="alert alert-error"><%= flash.error %></div>
+    <% } %>
+
+    <% if (errors.length > 0) { %>
+      <div class="alert alert-error">
+        <% errors.forEach(e => { %><div>• <%= e.msg %></div><% }) %>
+      </div>
+    <% } %>
+
+    <form action="/auth/login" method="POST" novalidate>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email"
+               value="<%= old.email || '' %>"
+               placeholder="you@example.com" autocomplete="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password"
+                 placeholder="Your password"
+                 autocomplete="current-password" required />
+          <button type="button" class="toggle-pw" onclick="togglePw('password')">👁</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+    </form>
+
+    <p class="auth-footer">Don't have an account? <a href="/auth/register">Register</a></p>
+  </div>
+</div>
+
+<script>
+function togglePw(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+</script>
+</body></html>

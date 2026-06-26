@@ -1,0 +1,28 @@
+<%- include('partials/head', { title: '2FA Verify — Secure Login' }) %>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">🛡️</div>
+    <h1 class="auth-title">Two-Factor Auth</h1>
+    <p class="auth-subtitle">Enter the 6-digit code from your authenticator app</p>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form action="/auth/2fa-verify" method="POST">
+      <div class="form-group">
+        <label for="token">Authentication Code</label>
+        <input type="text" id="token" name="token" maxlength="6"
+               placeholder="000000" inputmode="numeric"
+               autocomplete="one-time-code"
+               style="letter-spacing:0.4em; font-size:1.5rem; text-align:center" required />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Verify</button>
+    </form>
+
+    <p class="auth-footer"><a href="/auth/login">← Back to Login</a></p>
+  </div>
+</div>
+
+</body></html>
